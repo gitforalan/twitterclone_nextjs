@@ -1,0 +1,24 @@
+
+NProgress/styles.js not loading in
+DeSean · Lecture 66 · 11 days ago
+Even after installing the package with yarn and trying again with npm I still get this message when I just NProgressStyles:
+
+
+
+ERROR  Failed to compile with 1 errors                                                                                             5:27:57 PM
+
+This relative module was not found:
+
+* ./dist/styles.js in ./node_modules/next-nprogress/dist/styles.js
+
+Server listening on http://localhost:3000
+
+
+
+
+
+Follow the instructions below to fix the above error.
+
+https://github.com/sergiodxa/next-nprogress
+https://github.com/sergiodxa/next-nprogress
+https://github.com/sergiodxa/next-nprogress

@@ -1,0 +1,65 @@
+
+クリア
+- 未登録のusernameのリンクに行ってエラーが出た場合、Sorry, that page doesn’t exist!を表示する。
+- ズームするとcenterじゃなくて左上に寄っていくのをなんとかする
+- tweetfrom のonClick後、formの縦幅を広げて書き込めるようにする
+- mainpageheaderの messages セクションが、余白押しても遷移しない。（文字しか押せない）
+- tweetの一覧をちゃんとtimestampでソートする。（今ぐちゃぐちゃ）
+- following/followers のprofilecard2の2列目以降のprofilecard2間の縦幅がちょっと広いのでなんとかして狭める
+- following 一覧でunfollowするとすぐさまprofilecard2が消えるのなんとかする
+- tweet/following 消したあとの表示バグがひどい
+- tweetmodal footerと重なる部分が下スクロールしないと見えない
+- directmessagmodal自身をクリックしても消えてしまう。
+- like 色遷移なんか若干遅い
+- tweetmodalのdropdownのtweetmodalからはみ出てる部分が見えない
+- tweet dropdown を align right
+- ズームしてもスクロールして全体見えるようにする
+- アイテム間の距離がズームしても伸びたり縮んだりしてうまいことやる
+- mainpageheaderの右から2番目のavatar iconがzoom時に潰れる
+- ブラウザの幅を広げると、2列じゃなくて3列のレイアウトに自動で変更できるようにする。
+- whotofollowをzoomoutさせまくると文字がwhotofollowcardからはみ出る
+- profilecard の名前のonhoverの範囲がcard外にも及んでいる
+- mainpageheaderがhomeのtwo columnの恥にぴったしあっていない。もうちょっと各アイテム間の配置を広げる。
+- tweetしてから画面に反映されるのに若干ラグがある。(sortをbackendで処理した）
+- tweetmodalのリンク先がuser.usernameじゃなくて user.nameになってる。
+
+
+未解決
+- tweetmodal, reply追加するとmargintopが変わるのを阻止
+- mainpageheaderの下線位置もうちょい下枠に合わせる。
+- ツイートが長すぎるとmodalform全部見えない。スクロールできるようにすべき。
+- tweetmodalにurl付与
+- aaがtweetmodalで正しく表示されない。コンテンツに応じて幅を広げる必要があるかも。
+- tweet modelにparentとchild (tweet)を組み込む。リプできるようにする。
+- tweetmodalからの投稿には、"tweet has been sent" のpopupをページ上部に表示させる
+- tweetactivity modal ハリボテでもいいから実装
+- tweetmodal の follow button とか RT数like数とかカウント
+- userprofilelikes の実装。
+- n days ago じゃなくて日付で表示
+- tweetmodalのfootericons, hoveron で色変わらない。
+- like 押したときのエフェクト無い
+- tweet delete したらlike残りっぱなし
+- followingListでunfollowしたあと、followersListで再度同一アカウントfollowするとwarningが出る。
+
+- firebase 捨てて、全部graphqlで実装。
+- tweetform の右上絵文字オプションとか幅狭いときの add photos or videoとかつける
+- tweetform + ボタンのbackgroundcolor 白にしたい
+- tweetform + ボタンの機能実装
+- reply, retweet, like, directmessage 実装
+- tweet140文字制限
+- tweet内のicon or name hoveron で profilecardのpopup
+- Edit Profile on UserProfile.js 実装
+- tweetform の photo, gif, poll, location 機能 実装
+- mainpageheaderのsearch機能実装
+- notifications, moments 実装
+- 登録時 username被らないようにする
+- tweet表示数が多いときに、load中に下部でspinnerを表示する。load終了後追加のtweetを表示。
+- search枠クリック時に recent searchs のdropdown を表示
+- login してるのに login/register画面に飛ぶと、そのままlogin/register画面が表示され続けてhomeに飛ばないのをなんとかする
+  <Grid/> 使ってるけどもっと他に手段があるのでは？？
+- tweetformmodal の add another tweet/reply で投稿できるようにする
+- spinnerを画面全体じゃなくて、mainpageheaderのtwitterのアイコンで回す。
+- zoom するとmainpageheaderのavatar画像が縮むのをなんとかする。
+- tweetmodal で replyicon押しても、tweetformmodalがautofocusされない。
+
+
