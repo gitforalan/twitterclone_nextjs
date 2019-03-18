@@ -90,7 +90,7 @@ class TweetFooter extends React.Component {
       return 260;
     }
 
-    return 1 <= feedLength <= 7 ? 55:75
+    return 1 <= feedLength && feedLength <= 7 ? 55:75
   }
 
   getFooter = () => {
@@ -183,7 +183,8 @@ class TweetFooter extends React.Component {
       );
     }
 
-    if(1 <= feedLength <= 7) {
+
+    if(1 <= feedLength && feedLength <= 7) {
       return (
         <div>
           <Icon

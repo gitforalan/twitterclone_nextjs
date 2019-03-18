@@ -4,12 +4,7 @@ import "firebase/database";
 import "firebase/storage";
 
 var config = {
-  apiKey: "",
-  authDomain: "",
-  databaseURL: "",
-  projectId: "",
-  storageBucket: "",
-  messagingSenderId: ""
+
 };
 
 try {

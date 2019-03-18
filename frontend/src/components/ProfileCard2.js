@@ -298,7 +298,7 @@ class ProfileCard2 extends React.Component {
             </div>
             <div
               className="profilecard__box profilecard__header"
-              style={{marginLeft:70}}
+              style={{marginLeft:85}}
             >
               {this.getButton()}
               {this.dropDown()}
