@@ -6,7 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'next/router';
 import { connect } from "react-redux";
 
-import { getUserById } from "../api";
+import * as api from "../api";
 import { follow, unfollow, userStatsTabClicked } from "../actions";
 
 
@@ -133,7 +133,7 @@ class UserStatsBar extends React.Component {
   setTabStatsValue = async () => {
     const { targetUser } = this.props;
 
-    const _targetUser = await getUserById(targetUser.uid)
+    const _targetUser = await api.getUserById(targetUser.uid)
       .then(response => {
         return response.data;
       })

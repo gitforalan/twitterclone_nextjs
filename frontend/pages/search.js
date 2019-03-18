@@ -38,7 +38,7 @@ import {
 } from "../src/actions";
 
 
-import { searchTweet } from "../src/api";
+import * as api from "../src/api";
 
 
 
@@ -55,7 +55,7 @@ class SearchPage extends React.Component {
   setSearchResult = () => {
     const { router } = this.props;
     const query = router.query;
-    searchTweet(query.q)
+    api.searchTweet(query.q)
       .then(response => {
         this.setState({
           searchResult: response.data.tweets

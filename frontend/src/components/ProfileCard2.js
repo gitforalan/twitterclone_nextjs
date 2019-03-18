@@ -18,7 +18,7 @@ import {
   Popup
 } from 'semantic-ui-react';
 
-import { getUserById } from "../api";
+import * as api from "../api";
 import { connect } from "react-redux";
 import { withRouter } from 'next/router';
 import {

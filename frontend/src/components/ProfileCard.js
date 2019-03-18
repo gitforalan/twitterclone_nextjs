@@ -20,7 +20,7 @@ import {
 
 import Link from 'next/link';
 import { connect } from "react-redux";
-import { getUserById } from "../api";
+import * as api from "../api";
 
 
 
@@ -66,7 +66,7 @@ class ProfileCard extends React.Component {
     
     var { currentUser } = this.props;
 
-    var _currentUser = await getUserById(currentUser.uid)
+    var _currentUser = await api.getUserById(currentUser.uid)
       .then(response => {
         return response.data;
       })

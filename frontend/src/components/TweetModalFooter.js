@@ -32,10 +32,7 @@ import {
   replyIconClicked,
   setCurrentUserById,
 } from "../actions";
-import {
-  getTweetById,
-  getReplies,
-} from "../api";
+import * as api from "../api";
 
 class TweetModalFooter extends React.Component {
 

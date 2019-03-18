@@ -32,10 +32,7 @@ import {
   replyIconClicked,
   setCurrentUserById,
 } from "../actions";
-import {
-  getTweetById,
-  getReplies,
-} from "../api";
+import * as api from "../api";
 
 
 
@@ -119,14 +116,14 @@ class TweetModal extends React.Component {
 
     const tweetId = this.getQueryTweetId();
     if(tweetId !== null) {
-      getTweetById(tweetId)
+      api.getTweetById(tweetId)
         .then(response => {
           const _tweet = response.data;
           this.setState({
             tweet: _tweet,
             isLiked: this.checkLiked(currentUser.likes, _tweet),
           });
-          getReplies(_tweet.uid, 0, Date.now())
+          api.getReplies(_tweet.uid, 0, Date.now())
             .then(response => {
               this.setState({
                 replies: response.data.replies,
