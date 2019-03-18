@@ -4,6 +4,8 @@ import { Segment, Comment } from "semantic-ui-react";
 import Tweet from "./Tweet.js";
 import TweetModal from "./TweetModal";
 import BottomScrollListener from 'react-bottom-scroll-listener';
+import DeleteTweetConfirmationModal from "./DeleteTweetConfirmationModal";
+
 import TweetsFooter from "./TweetsFooter";
 import { withRouter } from 'next/router';
 import { connect } from "react-redux";
@@ -12,7 +14,7 @@ import { connect } from "react-redux";
 
 import {
   addTweet,
-  deleteTweet,
+  deleteLikedTweet,
   setLikedTweets,
 } from "../actions";
 
@@ -27,6 +29,9 @@ class LikedTweets extends React.Component {
     this.state = {
       bottomCount: 0,
       timestamp: Date.now(),
+
+      deletedTweet: null,
+      showDeleteTweetConfirmationModal: false,
     };
   }
 
@@ -72,15 +77,6 @@ class LikedTweets extends React.Component {
   }
 
 
-  handleDeleteTweet = (deletedTweet) => {
-    const { currentUser } = this.props;
-    this.props.deleteTweet(
-      currentUser.uid,
-      deletedTweet.uid
-    );
-  }
-
-
   handleChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
   }
@@ -95,6 +91,37 @@ class LikedTweets extends React.Component {
 
     this.loadTweets();
   }
+
+
+  
+  hideDeleteConfirmationModal = () => {
+    this.setState({
+      deletedTweet: null,
+      showDeleteTweetConfirmationModal: false,
+    });
+  }
+
+  handleDeleteTweet = (deletedTweet) => {
+    this.setState({
+      deletedTweet: deletedTweet,
+      showDeleteTweetConfirmationModal: true,
+    });
+  }
+
+  deleteTweetFinal = (deletedTweet) => {
+    const { currentUser } = this.props;
+
+    this.props.deleteLikedTweet(
+      currentUser.uid,
+      deletedTweet.uid
+    );
+
+    this.setState({
+      deletedTweet: null,
+      showDeleteTweetConfirmationModal: false,
+    });
+  }
+
 
 
   render() {
@@ -121,6 +148,12 @@ class LikedTweets extends React.Component {
           feedLength={myFeed.length}
         />
         <TweetModal />
+        <DeleteTweetConfirmationModal 
+          tweet={this.state.deletedTweet}
+          showModal={this.state.showDeleteTweetConfirmationModal}
+          hideDeleteConfirmationModal={this.hideDeleteConfirmationModal}
+          deleteTweetFinal={this.deleteTweetFinal}
+        />
       </React.Fragment>
     );
     
@@ -142,7 +175,7 @@ export default withRouter(
     mapStateToProps,
     {
       addTweet,
-      deleteTweet,
+      deleteLikedTweet,
       setLikedTweets,
     }
   )(LikedTweets)

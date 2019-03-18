@@ -22,6 +22,8 @@ import { Link } from 'next/link';
 import moment from "moment";
 import TweetActivityModal from "./TweetActivityModal";
 import NewDirectMessageModal from "./NewDirectMessageModal";
+import DeleteTweetConfirmationModal from "./DeleteTweetConfirmationModal";
+
 import { withRouter } from 'next/router';
 import Replies from "./Replies";
 import { connect } from "react-redux";
@@ -54,7 +56,9 @@ class TweetModal extends React.Component {
       isLiked: false,
       showTweetModal: false,
       hasError: false,
-      tweetClickedTrigger: this.props.tweetClickedTrigger
+      tweetClickedTrigger: this.props.tweetClickedTrigger,
+      deletedTweet: null,
+      showDeleteTweetConfirmationModal: false,
     }
   }
 
@@ -156,19 +160,6 @@ class TweetModal extends React.Component {
 
   timeFromNow = timestamp => moment(timestamp).fromNow();
 
-
-
-
-
-
-  handleDeleteTweet = (deletedTweet) => {
-    const { currentUser } = this.props;
-    this.props.deleteTweet(currentUser.uid, deletedTweet.uid);
-    this.routerTweetModalClose();
-    this.setState({
-      showTweetModal: false,
-    });
-  }
 
   handleToggleLike = (e) => {
     e.stopPropagation();
@@ -490,6 +481,39 @@ class TweetModal extends React.Component {
       replies === null
     );
   }
+
+  hideDeleteConfirmationModal = () => {
+    this.setState({
+      deletedTweet: null,
+      showDeleteTweetConfirmationModal: false,
+    });
+  }
+
+
+  handleDeleteTweet = (deletedTweet) => {
+    this.setState({
+      deletedTweet: deletedTweet,
+      showDeleteTweetConfirmationModal: true,
+    });
+  }
+
+
+  deleteTweetFinal = (deletedTweet) => {
+    const { currentUser } = this.props;
+
+    this.props.deleteTweet(
+      currentUser.uid,
+      deletedTweet.uid
+    );
+
+    this.routerTweetModalClose();
+
+    this.setState({
+      deletedTweet: null,
+      showTweetModal: false,
+      showDeleteTweetConfirmationModal: false,
+    });
+  }
   
 
 
@@ -618,6 +642,13 @@ class TweetModal extends React.Component {
             parentTweet={tweet}
             replies={this.state.replies}
             hideTweetModal={this.hideTweetModal}
+          />
+
+          <DeleteTweetConfirmationModal 
+            tweet={this.state.tweet}
+            showModal={this.state.showDeleteTweetConfirmationModal}
+            hideDeleteConfirmationModal={this.hideDeleteConfirmationModal}
+            deleteTweetFinal={this.deleteTweetFinal}
           />
 
         </Segment.Group>

@@ -13,6 +13,7 @@ import {
 import * as api from '../api';
 import BottomScrollListener from 'react-bottom-scroll-listener';
 import TweetModalFooter from "./TweetModalFooter";
+import DeleteTweetConfirmationModal from "./DeleteTweetConfirmationModal";
 
 
 
@@ -33,6 +34,8 @@ class Replies extends React.Component {
       tweetClickedTrigger: this.props.tweetClickedTrigger,
       bottomCount: 0,
       timestamp: Date.now(),
+      deletedTweet: null,
+      showDeleteTweetConfirmationModal: false,
 
     }
   }
@@ -40,28 +43,7 @@ class Replies extends React.Component {
 
 
 
-  handleDeleteTweet = (deletedTweet) => {
-    const { currentUser } = this.props;
-    api.deleteReply(currentUser.uid, deletedTweet.uid)
-      .then(response => {
-        const deletedReply = response.data;
-        const replies = this.state.replies;
-        const postIndex = replies.findIndex(
-          reply => reply.uid === deletedReply.uid
-        );
-        const updatedReplies = [
-          ...replies.slice(0, postIndex),
-          ...replies.slice(postIndex + 1)
-        ];
-        this.setState({
-          replies: updatedReplies,
-        });
-        this.props.updateUserStats();
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  }
+  
 
   sendTweet = () => {
     const { currentUser, parentTweet } = this.props;
@@ -119,6 +101,48 @@ class Replies extends React.Component {
     this.loadReplies();
   }
 
+  handleDeleteTweet = (deletedTweet) => {
+    this.setState({
+      deletedTweet: deletedTweet,
+      showDeleteTweetConfirmationModal: true,
+    });
+  }
+
+  hideDeleteConfirmationModal = () => {
+    this.setState({
+      deletedTweet: null,
+      showDeleteTweetConfirmationModal: false,
+    });
+  }
+
+  deleteTweetFinal = (deletedTweet) => {
+    const { currentUser } = this.props;
+
+    api.deleteReply(currentUser.uid, deletedTweet.uid)
+      .then(response => {
+        const deletedReply = response.data;
+        const replies = this.state.replies;
+        const postIndex = replies.findIndex(
+          reply => reply.uid === deletedReply.uid
+        );
+        const updatedReplies = [
+          ...replies.slice(0, postIndex),
+          ...replies.slice(postIndex + 1)
+        ];
+        this.setState({
+          replies: updatedReplies,
+        });
+        this.props.updateUserStats();
+      })
+      .catch(error => {
+        console.error(error);
+      });
+    
+    this.setState({
+      deletedTweet: null,
+      showDeleteTweetConfirmationModal: false,
+    });
+  }
 
 
   render() {
@@ -145,6 +169,12 @@ class Replies extends React.Component {
         ))}
         <TweetModalFooter
           replies={replies}
+        />
+        <DeleteTweetConfirmationModal 
+          tweet={this.state.deletedTweet}
+          showModal={this.state.showDeleteTweetConfirmationModal}
+          hideDeleteConfirmationModal={this.hideDeleteConfirmationModal}
+          deleteTweetFinal={this.deleteTweetFinal}
         />
       </React.Fragment>
     );
