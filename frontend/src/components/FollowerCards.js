@@ -38,26 +38,23 @@ class FollowerCards extends React.Component {
     super(props);
     this.state = {
       bottomCount: 0,
+      currentUser: null,
     };
   }
 
 
   componentDidMount() {
+    const { currentUser } = this.props;
+    api.getUserById(currentUser.uid)
+      .then(response => {
+        this.setState({
+          currentUser: response.data,
+        });
+      })
+      .catch(error => {
+        console.error(error);
+      });
     this.initFollowers();
-  }
-
-
-  componentDidUpdate(prevProps) {
-    const { userStatsTabClickedTrigger } = this.props;
-
-    const flag = (
-      prevProps.userStatsTabClickedTrigger !==
-      userStatsTabClickedTrigger
-    );
-
-    if(flag) {
-      this.initFollowers();
-    }
   }
 
 
@@ -68,12 +65,14 @@ class FollowerCards extends React.Component {
       targetUser.uid,
       numCol,
       bottomCount,
-      true,
+      true, //isInit
     );
   }
 
   getProfileCards = () => {
+    const { currentUser } = this.state;
     const { numCol, followersList } = this.props;
+
     var res = [];
     const myList = followersList;
     for(var i = 0; i < myList.length; i+=numCol) {
@@ -82,17 +81,12 @@ class FollowerCards extends React.Component {
         <div key={user.uid} style={{display:'inline-block'}}>
           <ProfileCard2
             key={user.uid}
+            currentUser={currentUser}
             targetUser={user}
           />
         </div>
       )));
       res.push(oneRow);
-      
-      /*
-      res.push(oneRow.map((item,k) => {
-        return <div key={k}>{item}</div>
-      }));
-      */
     }
     return res;
   }
@@ -120,6 +114,11 @@ class FollowerCards extends React.Component {
 
 
   render() {
+    const { currentUser } = this.state;
+    if(currentUser === null) {
+      return null;
+    }
+    
     return (
       
         <BottomScrollListener

@@ -80,6 +80,7 @@ class TweetModal extends React.Component {
     );
   }
 
+
   componentDidUpdate(prevProps) {
     const { tweetClickedTrigger } = this.props;
     if(prevProps.tweetClickedTrigger !== tweetClickedTrigger) {
@@ -125,8 +126,18 @@ class TweetModal extends React.Component {
           const _tweet = response.data;
           this.setState({
             tweet: _tweet,
-            isLiked: this.checkLiked(currentUser.likes, _tweet),
           });
+          api.getUserById(currentUser.uid)
+            .then(response => {
+              const _currentUser = response.data;
+              this.setState({
+                currentUser: _currentUser,
+                isLiked: this.checkLiked(_currentUser.likes, _tweet),
+              });
+            })
+            .catch(error => {
+              console.error(error);
+            });
           api.getReplies(_tweet.uid, 0, Date.now())
             .then(response => {
               this.setState({
@@ -174,9 +185,11 @@ class TweetModal extends React.Component {
     const sendRequest = isLiked ? unlikeTweet : likeTweet;
     this.setState({ isLiked: !isLiked });
     sendRequest(currentUser.uid, tweet.uid);
+
     setTimeout(function() {
       setCurrentUserById(currentUser.uid)
     }.bind(this), 100);
+  
   }
 
 
@@ -607,6 +620,7 @@ class TweetModal extends React.Component {
                   fontSize:25,
                   marginTop:15,
                   wordBreak:"break-all",
+                  width:575,
                 }}>
                   {tweet.content.split('\n').map((item, key) => {
                     return (

@@ -25,6 +25,10 @@ import NewDirectMessageModal from "./NewDirectMessageModal";
 import { withRouter } from 'next/router';
 import Replies from "./Replies";
 import { connect } from "react-redux";
+import { withStyles } from '@material-ui/core/styles';
+
+
+
 
 import {
 
@@ -126,7 +130,12 @@ class DeleteTweetConfirmationModal extends React.Component {
           <div
             onMouseEnter={() => this.setState({isMouseOnName:true})}
             onMouseLeave={() => this.setState({isMouseOnName:false})}
-            style={{display:"inline", marginLeft:5, color:"grey", cursor:"pointer"}}
+            style={{
+              display:"inline",
+              marginLeft:5,
+              color:"grey",
+              cursor:"pointer"
+            }}
             onClick={this.profileRouting}
           >
             @{tweet.postedBy.username}・{this.timeFromNow(tweet.timestamp)}
@@ -136,7 +145,7 @@ class DeleteTweetConfirmationModal extends React.Component {
             wordBreak:"break-all",
             marginTop:3,
             fontSize:16,
-            width:425
+            width:425,
           }}>
             {tweet.content.split('\n').map((item, key) => {
               return (
@@ -204,7 +213,7 @@ class DeleteTweetConfirmationModal extends React.Component {
 
   render() {
 
-    const { tweet } = this.props;
+    const { tweet, classes } = this.props;
 
     if(tweet === null) {
       return null;
@@ -215,7 +224,7 @@ class DeleteTweetConfirmationModal extends React.Component {
         closeOnDimmerClick={true}
         onClose={() => this.handleCloseModal()}
         open={this.state.showModal}
-        style={{width:525,}}
+        style={{width:525, top:"25%"}}
       >
         <Segment.Group >
           <Segment style={{
@@ -228,7 +237,10 @@ class DeleteTweetConfirmationModal extends React.Component {
           }}>
             {this.getTitle()}
           </Segment>
-          <Segment style={{width:525, height:90}}>
+          <Segment
+            style={{width:525, height:90, overflow:"scroll",}}
+            className={classes.hideScroll}
+          >
             {this.getDeletedTweetCard()}
           </Segment>
           <Segment style={{
@@ -246,13 +258,26 @@ class DeleteTweetConfirmationModal extends React.Component {
   }
 }
 
+
+const styles = theme => ({
+  hideScroll: {
+    '&::-webkit-scrollbar': {
+      display:'none'
+    },
+  },
+});
+
+
+
 const mapStateToProps = state => ({
   currentUser: state.user.currentUser,
 });
 
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-  )(DeleteTweetConfirmationModal)
+export default withStyles(styles)(
+  withRouter(
+    connect(
+      mapStateToProps,
+    )(DeleteTweetConfirmationModal)
+  )
 );

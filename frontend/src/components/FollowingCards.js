@@ -38,26 +38,23 @@ class FollowingCards extends React.Component {
     super(props);
     this.state = {
       bottomCount: 0,
+      currentUser: null,
     };
   }
 
 
   componentDidMount() {
+    const { currentUser } = this.props;
+    api.getUserById(currentUser.uid)
+      .then(response => {
+        this.setState({
+          currentUser: response.data,
+        });
+      })
+      .catch(error => {
+        console.error(error);
+      });
     this.initFollowing();
-  }
-
-
-  componentDidUpdate(prevProps) {
-    const { userStatsTabClickedTrigger } = this.props;
-
-    const flag = (
-      prevProps.userStatsTabClickedTrigger !==
-      userStatsTabClickedTrigger
-    );
-
-    if(flag) {
-      this.initFollowing();
-    }
   }
 
 
@@ -73,7 +70,9 @@ class FollowingCards extends React.Component {
   }
 
   getProfileCards = () => {
+    const { currentUser } = this.state;
     const { numCol, followingList } = this.props;
+
     var res = [];
     const myList = followingList;
     for(var i = 0; i < myList.length; i+=numCol) {
@@ -82,17 +81,12 @@ class FollowingCards extends React.Component {
         <div key={user.uid} style={{display:'inline-block'}}>
           <ProfileCard2
             key={user.uid}
+            currentUser={currentUser}
             targetUser={user}
           />
         </div>
       )));
       res.push(oneRow);
-
-      /*
-      res.push(oneRow.map((item,k) => {
-        return <div key={k}>{item}</div>
-      }));
-      */
     }
     return res;
   }
@@ -120,6 +114,11 @@ class FollowingCards extends React.Component {
 
 
   render() {
+    const { currentUser } = this.state;
+    if(currentUser === null) {
+      return null;
+    }
+
     return (
       <BottomScrollListener
         onBottom={() => this.handleScrollToBottom()}

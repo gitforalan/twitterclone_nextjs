@@ -45,24 +45,9 @@ class ProfileCard2 extends React.Component {
   }
 
   componentDidMount() {
-    const { targetUser } = this.props;
-    this.handleCheckFollowing(targetUser);
-  }
-
-  /*
-  componentDidUpdate(prevProps) {
-    const { userStatsTabClickedTrigger } = this.props;
-
-    const flag = (
-      prevProps.userStatsTabClickedTrigger !==
-      userStatsTabClickedTrigger
-    );
-
-    if(flag) {
-      this.handleCheckFollowing();
-    }
-  }*/
-  
+    const { currentUser, targetUser } = this.props;
+    this.handleCheckFollowing(currentUser, targetUser);
+  }  
 
   hoverOnButton = () => {
     this.setState({
@@ -77,7 +62,7 @@ class ProfileCard2 extends React.Component {
   }
 
   dropDown = () => {
-    const {targetUser, currentUser} = this.state;
+    const {currentUser, targetUser} = this.state;
     if(targetUser.uid === currentUser.uid) {
       return null;
     }
@@ -113,8 +98,7 @@ class ProfileCard2 extends React.Component {
     return following.includes(targetUser.uid);
   }
 
-  handleCheckFollowing = (targetUser) => {
-    const { currentUser } = this.props;
+  handleCheckFollowing = (currentUser, targetUser) => {
     this.setState({
       isFollowingThisUser: this.checkFollowing(currentUser, targetUser),
     });
@@ -139,7 +123,7 @@ class ProfileCard2 extends React.Component {
   }
 
   getButton = () => {
-    const {targetUser, currentUser} = this.state;
+    const {currentUser, targetUser} = this.state;
     if(targetUser.uid === currentUser.uid) {
       return null;
     }
@@ -249,15 +233,17 @@ class ProfileCard2 extends React.Component {
   }
 
   render() {
-    const { router } = this.props;
+    const { targetUser } = this.state;
 
     if(this.isLoading()) {
       return null;
     }
-    const {targetUser} = this.state;
     
     return(
-      <Card style={{width:294.5, height:294.5, marginTop:10, marginLeft:10}}>
+      <Card style={{
+        width:294.5, height:294.5,
+        marginTop:10, marginLeft:10
+      }}>
         <Image
           style={{height:100, width:"100%", cursor:"pointer"}}
           src="../../static/images/tmppic.png"
@@ -317,10 +303,10 @@ class ProfileCard2 extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  currentUser: state.user.currentUser,
   updateUserStatsTrigger: state.tweet.updateUserStatsTrigger,
   followTrigger: state.tweet.followTrigger,
   userStatsTabClickedTrigger: state.tweet.userStatsTabClickedTrigger,
+  followActionTargetId: state.tweet.followActionTargetId,
 });
 
 export default withRouter(

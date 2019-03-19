@@ -151,9 +151,7 @@ class Tweet extends React.Component {
     const sendRequest = isLiked ? unlikeTweet : likeTweet;
     this.setState({ isLiked: !isLiked });
     sendRequest(currentUser.uid, tweet.uid);
-    setTimeout(function() {
-      setCurrentUserById(currentUser.uid)
-    }.bind(this), 100);
+    setCurrentUserById(currentUser.uid);
   }
 
 
@@ -499,7 +497,7 @@ class Tweet extends React.Component {
               @{tweet.postedBy.username}・{this.timeFromNow(tweet.timestamp)}
             </div>
             {this.tweetDropdown()}
-            <div style={{wordBreak:"break-all"}}>
+            <div style={{wordBreak:"break-all", width:510}}>
               {tweet.content.split('\n').map((item, key) => {
                 return (
                   <React.Fragment key={key}>
