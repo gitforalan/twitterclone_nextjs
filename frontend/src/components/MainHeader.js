@@ -285,14 +285,14 @@ class MainHeader extends React.Component {
     );
   }
   
-  marginLeftCalc1 = () => {
+  calcMarginLeft1 = () => {
     const { screenWidth } = this.state;
     var minValue = 105;
     var value = (1000-screenWidth)*0.35;
     return Math.min(minValue, value);
   }
 
-  marginLeftCalc2 = () => {
+  calcMarginLeft2 = () => {
     const { screenWidth } = this.state;
     var minValue = 75;
     var value = (1000-screenWidth)*0.25;
@@ -365,13 +365,13 @@ class MainHeader extends React.Component {
             size="large"
             style={{
               marginTop:15,
-              marginLeft:215-this.marginLeftCalc1()
+              marginLeft:215-this.calcMarginLeft1()
             }}
           />
         
           <div style={{
             marginTop:5,
-            marginLeft:160-this.marginLeftCalc2()
+            marginLeft:160-this.calcMarginLeft2()
           }}>
             <SearchPanel />
           </div>
