@@ -276,7 +276,7 @@ class MainHeader extends React.Component {
     );
   }
 
-  checkIfRenderMainHeader = () => {
+  doNotShowMainHeaderNow = () => {
     const { currentPath } = this.state;
     return (
       currentPath===null || currentPath==="/" ||
@@ -566,7 +566,7 @@ class MainHeader extends React.Component {
   render() {
     const {screenWidth} = this.state;
     
-    if(this.checkIfRenderMainHeader()) {
+    if(this.doNotShowMainHeaderNow()) {
       return null;
     }
 
