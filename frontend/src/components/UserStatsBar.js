@@ -7,7 +7,12 @@ import { withRouter } from 'next/router';
 import { connect } from "react-redux";
 
 import * as api from "../api";
-import { follow, unfollow, userStatsTabClicked } from "../actions";
+import {
+  follow,
+  unfollow,
+  userStatsTabClicked,
+  setCurrentUserById,
+} from "../actions";
 
 
 
@@ -254,9 +259,16 @@ class UserStatsBar extends React.Component {
 
   handleCheckFollowing = () => {
     const { currentUser, targetUser } = this.props;
-    this.setState({
-      isFollowingThisUser: this.checkFollowing(currentUser, targetUser),
-    });
+    api.getUserById(currentUser.uid)
+      .then(response => {
+        const _currentUser = response.data;
+        this.setState({
+          isFollowingThisUser: this.checkFollowing(_currentUser, targetUser),
+        });
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 
 
@@ -490,7 +502,7 @@ export default withStyles(styles)(
   withRouter(
     connect(
       mapStateToProps,
-      {follow, unfollow, userStatsTabClicked}
+      {follow, unfollow, userStatsTabClicked, setCurrentUserById}
     )(UserStatsBar)
   )
 );
