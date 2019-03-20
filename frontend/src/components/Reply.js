@@ -149,7 +149,7 @@ class Reply extends React.Component {
     sendRequest(currentUser.uid, tweet.uid);
     setTimeout(function() {
       setCurrentUserById(currentUser.uid)
-    }.bind(this), 100);
+    }.bind(this), 1000);
   }
 
   tweetDropdown = () => {

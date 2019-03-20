@@ -185,10 +185,10 @@ class TweetModal extends React.Component {
     const sendRequest = isLiked ? unlikeTweet : likeTweet;
     this.setState({ isLiked: !isLiked });
     sendRequest(currentUser.uid, tweet.uid);
-
+    
     setTimeout(function() {
-      setCurrentUserById(currentUser.uid)
-    }.bind(this), 100);
+      setCurrentUserById(currentUser.uid);
+    }.bind(this), 1000);
   
   }
 
